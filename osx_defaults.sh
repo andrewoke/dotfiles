@@ -35,7 +35,8 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 
 # Set computer name (as done via System Preferences → Sharing)
 # set computerName to something without spaces
-computerName="AndrewMacbookPro"
+read -e -p "Enter hostname (alphanumeric only) " computerName
+
 sudo scutil --set ComputerName $computerName 
 sudo scutil --set HostName $computerName
 sudo scutil --set LocalHostName $computerName
@@ -183,7 +184,7 @@ zshPath=/usr/local/Cellar/zsh/5.0.2/bin/zsh
 sudo echo $zshPath >> /etc/shells
 
 # change shell to zsh
-chsh -s $zshPath andrew
+sudo chsh -s $zshPath andrew
 
 ###############################################################################
 # Finder                                                                      #
@@ -371,7 +372,7 @@ find ~/Library/Application\ Support/Dock -name "*.db" -maxdepth 1 -delete
 defaults write com.apple.dock wvous-tl-corner -int 2
 defaults write com.apple.dock wvous-tl-modifier -int 0
 # Top right screen corner → Desktop
-defaults write com.apple.dock wvous-tr-corner -int 4
+defaults write com.apple.dock wvous-tr-corner -int 10
 defaults write com.apple.dock wvous-tr-modifier -int 0
 # Bottom left screen corner → Start screen saver
 defaults write com.apple.dock wvous-bl-corner -int 5
@@ -391,7 +392,7 @@ defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled -bool true
 
 # Hide Safari’s bookmarks bar by default
-defaults write com.apple.Safari ShowFavoritesBar -bool false
+defaults write com.apple.Safari ShowFavoritesBar -bool true
 
 # Disable Safari’s thumbnail cache for History and Top Sites
 defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
@@ -457,7 +458,8 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 ###############################################################################
 # Address Book, Dashboard, iCal, TextEdit, and Disk Utility                   #
-############################################################################### # Enable the debug menu in Address Book
+############################################################################### 
+# Enable the debug menu in Address Book
 defaults write com.apple.addressbook ABShowDebugMenu -bool true
 
 # Enable Dashboard dev mode (allows keeping widgets on the desktop)
