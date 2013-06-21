@@ -36,7 +36,7 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 # Set computer name (as done via System Preferences → Sharing)
 # set computerName to something without spaces
 read -e -p "Enter hostname (alphanumeric only) " computerName
-
+computerName="$computerName.ld"
 sudo scutil --set ComputerName $computerName 
 sudo scutil --set HostName $computerName
 sudo scutil --set LocalHostName $computerName
