@@ -5,6 +5,10 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 1800; kill -0 "$$" || exit; done 2>/dev/null &
 
+if type "git" &> /dev/null; then
+	echo "git not installed. Aborting."
+fi
+
 if type "brew" &> /dev/null; then
   echo "Brew is already installed"
 else
