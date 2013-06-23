@@ -1,0 +1,32 @@
+# Nginx web server main configuration file /etc/nginx/nginx.conf
+#
+user [username] staff;
+worker_processes  4;
+worker_rlimit_nofile  8192;
+
+error_log  logs/error.log;
+#pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    
+    default_type  application/octet-stream;
+    sendfile           on;
+    keepalive_timeout  10;
+    tcp_nodelay        on;
+    gzip               on;
+    
+    ## FastCGI.
+    include /usr/local/etc/nginx/fastcgi.conf;
+    
+    ## For the filefield_nginx_progress module to work. From the
+    ## README. Reserve 1MB under the name 'uploads' to track uploads.
+    #upload_progress uploads 1m;
+    
+    #include /etc/nginx/conf.d/*.conf;
+    include /usr/local/etc/nginx/aegir.conf;
+}
