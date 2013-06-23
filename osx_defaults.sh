@@ -36,11 +36,12 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 # Set computer name (as done via System Preferences → Sharing)
 # set computerName to something without spaces
 read -e -p "Enter hostname (alphanumeric only) " computerName
-computerName="$computerName.ld"
-sudo scutil --set ComputerName $computerName 
-sudo scutil --set HostName $computerName
+computerName="$computerName"
+computerNameLD="$computerName.ld"
+sudo scutil --set ComputerName $computerNameLD
+sudo scutil --set HostName $computerNameLD
 sudo scutil --set LocalHostName $computerName
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $computerName
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $computerNameLD
 
 # Menu bar: show remaining battery time (on pre-10.8); hide percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
@@ -99,9 +100,9 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClic
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
 
 # Trackpad: swipe between pages with three fingers
-defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerHorizSwipeGesture -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerHorizSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 0
 
 # Disable “natural” (Lion-style) scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
@@ -181,7 +182,9 @@ sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutio
 
 zshPath=/usr/local/Cellar/zsh/5.0.2/bin/zsh
 #echo the zsh brew install into /etc/shells
+sudo chmod 666 /etc/shells
 sudo echo $zshPath >> /etc/shells
+sudo chmod 644 /etc/shells
 
 # change shell to zsh
 sudo chsh -s $zshPath andrew

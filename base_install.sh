@@ -3,7 +3,7 @@
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
-while true; do sudo -n true; sleep 120; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do sudo -n true; sleep 1800; kill -0 "$$" || exit; done 2>/dev/null &
 
 if type "brew" &> /dev/null; then
   echo "Brew is already installed"
@@ -13,8 +13,10 @@ else
   brew doctor
 fi
 
-git config --global user.email "andrew.oke@gmail.com"
-git config --global user.name "Andrew Oke"
+read -e -p "Enter the git global user.email " gitUserEmail
+git config --global user.email gitUserEmail
+read -e -p "Enter git global user.name " gitUserName
+git config --global user.name gitUserName
 
 #let's us install all those programs that aren't in the app store
 if [ -x /usr/local/Cellar/brew-cask ]; then
@@ -67,6 +69,18 @@ else
 	select yn in "Yes" "No"; do
 		case $yn in
 			Yes )  brew cask install --appdir="/Applications" plex-media-server; break;;
+			No ) break;;
+		esac
+	done
+fi
+
+if [ -x "/Applications/Plex.app" ] ; then
+  echo "Plex already installed"
+else
+	echo "Do you wish to install Plex Frontend?"
+	select yn in "Yes" "No"; do
+		case $yn in
+			Yes )  brew cask install --appdir="/Applications" plex; break;;
 			No ) break;;
 		esac
 	done
@@ -290,19 +304,19 @@ else
 	done
 fi
 
-if [ -x /opt/X11 ] ; then
+if [ -x /usr/X11 ] ; then
   echo "xquartz ready installed"
 else
 	echo "Do you wish to install xquartz?"
 	select yn in "Yes" "No"; do
 		case $yn in
-			Yes )  brew cask install xquartz; sudo ln -s /opt/X11 /usr/X11; break;;
+			Yes )  brew cask install x-quartz; sudo ln -s /opt/X11 /usr/X11; break;;
 			No ) break;;
 		esac
 	done
 fi
 
-if [ -x /opt/X1122 ] ; then
+if [ -x /var/aegir ] ; then
   echo "aegir ready installed"
 else
 	echo "Do you wish to install aegir?"
@@ -316,7 +330,9 @@ else
 				sudo touch /etc/postfix/sasl_passwd;
 				sudo chmod 666 /etc/postfix/sasl_passwd;
 				sudo chmod 666 /etc/postfix/main.cf;
-				sudo echo "smtp.gmail.com:587 email:password" > /etc/postfix/sasl_passwd;
+				read -e -p "Enter the email address to use for postfix email relay " postfixEmail
+				read -e -p "Enter password for postfix email address " postfixPassword
+				sudo echo "smtp.gmail.com:587 $postfixEmail:$postfixPassword" > /etc/postfix/sasl_passwd;
 				sudo postmap /etc/postfix/sasl_passwd;
 				sudo cat $HOME/.dotfiles/aegir/postfix-main.cf >> /etc/postfix/main.cf;
 				sudo defaults write /System/Library/LaunchDaemons/org.postfix.master.plist RunAtLoad -bool true;
@@ -325,11 +341,15 @@ else
 				brew tap homebrew/dupes
 				brew install homebrew/dupes/gzip
 				brew install dnsmasq
-				mkdir /usr/local/etc
+				if [ ! -d /usr/local/etc ] ; then
+					sudo mkdir /usr/local/etc
+				fi
+				sudo touch /etc/resolv.dnsmasq.conf	
+				sudo chmod 666 /etc/resolv.dnsmasq.conf
 				cp $(brew --prefix dnsmasq)/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf
-				sudo printf "resolv-file=/etc/resolv.dnsmasq.conf\naddress=/.ld/127.0.0.1\nlisten-address=127.0.0.1" > /usr/local/etc/dnsmasq.conf
+				sudo printf "resolv-file=/etc/resolv.dnsmasq.conf\naddress=/.ld/127.0.0.1\nlisten-address=127.0.0.1" >> /usr/local/etc/dnsmasq.conf
 				sudo printf "# OpenDNS IPv6:\nnameserver 2620:0:ccd::2\nnameserver 2620:0:ccc::2\n# Google IPv6:\nnameserver 2001:4860:4860::8888\nnameserver 2001:4860:4860::8844\n# OpenDNS:\nnameserver 208.67.222.222\nnameserver 208.67.220.220\n# Google:\nnameserver 8.8.8.8\nnameserver 8.8.4.4\n" > /etc/resolv.dnsmasq.conf
-				sudo cp $(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons
+				sudo cp $(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons/
 				sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 				sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 				curl -s -L -o /tmp/nginx-upload-progress.tar.gz https://github.com/masterzen/nginx-upload-progress-module/tarball/v0.9.0 && mkdir /tmp/nginx-upload-progress && tar zxpf /tmp/nginx-upload-progress.tar.gz --strip-components 1 -C /tmp/nginx-upload-progress && rm /tmp/nginx-upload-progress.tar.gz
@@ -339,20 +359,61 @@ else
 				[ $? -eq 0 ] && rm -rf /tmp/nginx-upload-progress /tmp/nginx-fair
 				mkdir -vp $(brew --prefix nginx)/var/{microcache,log,run}
 				mv /usr/local/etc/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf.bak
-				curl http://realityloop.com/sites/realityloop.com/files/uploads/nginx.conf_.txt > /usr/local/etc/nginx/nginx.conf
+				cp $HOME/ /usr/local/etc/nginx/nginx.conf
 				sed -i -e 's/\[username\]/'`whoami`'/' /usr/local/etc/nginx/nginx.conf
 				sudo mkdir /var/log/nginx
 				sudo mkdir /var/lib/nginx
-				brew install mariadb --use-llvm --env=std
+				brew install mariadb
 				unset TMPDIR
 				mysql_install_db --user=`whoami` --basedir="$(brew --prefix mariadb)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
+				ln -sfv /usr/local/opt/mariadb/*.plist ~/Library/LaunchAgents
+				launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
 				brew tap josegonzalez/homebrew-php
 				brew tap homebrew/dupes
 				brew install php53 --with-mysql --with-fpm --with-imap
 				brew install php53-xhprof
 				brew install php53-xdebug
+				brew install php53-apc
+				brew install php53-memcached
+				brew install php53-mcrypt
+				brew install libmemcached
+				brew install memcached
+				brew install varnish
 				brew install php53-uploadprogress
-				
+				chmod 766 /usr/local/etc/php/5.3/php.ini
+				printf "extension=\"/usr/local/Cellar/php53-xhprof/0.9.2/xhprof.so\"\nextension=\"/usr/local/Cellar/php53-uploadprogress/1.0.3.1/uploadprogress.so\"\nzend_extension=\"/usr/local/Cellar/php53-xdebug/2.2.1/xdebug.so\"" >> /usr/local/etc/php/5.3/php.ini
+				sed -i '' 's/memory_limit = .*/memory_limit = 512M/' /usr/local/etc/php/5.3/php.ini
+				sed -i '' 's/;date\.timezone =.*/date\.timezone = America\/Toronto/' /usr/local/etc/php/5.3/php.ini
+				sed -i '' 's/;pid = run\/php-fpm\.pid/pid = \/usr\/local\/var\/run\/php-fpm.pid/' /usr/local/etc/php/5.3/php-fpm.conf
+				sed -i '' 's/;pm.max_requests = 500/pm.max_requests = 500/' /usr/local/etc/php/5.3/php-fpm.conf
+				sudo ln -s  $(brew --prefix josegonzalez/php/php53)/var/log/php-fpm.log /var/log/nginx/php-fpm.log
+				sudo cp $(brew --prefix nginx)/homebrew.mxcl.nginx.plist /Library/LaunchDaemons/
+				sudo chown root:wheel /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+				sudo defaults delete /Library/LaunchDaemons/homebrew.mxcl.nginx.plist KeepAlive	
+				sudo defaults delete /Library/LaunchDaemons/homebrew.mxcl.nginx.plist UserName
+				sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+				mkdir -p ~/Library/LaunchAgents
+				cp $(brew --prefix josegonzalez/php/php53)/homebrew-php.josegonzalez.php53.plist ~/Library/LaunchAgents/
+				launchctl load -w ~/Library/LaunchAgents/homebrew-php.josegonzalez.php53.plist
+				sudo $(brew --prefix mariadb)/bin/mysql_secure_installation
+				brew install wget
+				sudo mkdir /var/aegir
+				sudo chown `whoami` /var/aegir
+				sudo chgrp staff /var/aegir
+				sudo dscl . append /Groups/_www GroupMembership `whoami`
+				#sudo echo "`whoami` ALL=NOPASSWD: /usr/local/bin/nginx" >> /etc/sudoers
+				sudo ln -s /var/aegir/config/nginx.conf /usr/local/etc/nginx/aegir.conf
+				brew install drush
+				drush dl --destination=$HOME/.drush provision-6.x-2.x
+				printf "magic_quotes_gpc = 0\nmagic_quotes_runtime = 0\nmagic_quotes_sybase = 0" > $HOME/.drush/drush.ini
+				drush hostmaster-install --aegir_root='/var/aegir' --root='/var/aegir/hostmaster-6.x-2.x-dev' --http_service_type=nginx --aegir_host=$computerName --client_email=$postfixEmail --aegir_db_host=127.0.0.1
+				mkdir $HOME/Sites
+				rmdir /var/aegir/platforms
+				sudo ln -s $HOME/Sites /var/aegir/platforms
+				sudo mkdir -p /var/aegir/config/includes
+				sudo chown -R `whoami`:staff /var/aegir
+				chmod -R 755 /var/aegir
+				sudo printf "<?php\nheader('X-Accel-Expires: 0'); //disable nginx caching\nunset(\n$conf\['cache'\]);          // disable hardcoded caching\nunset(\n$conf\['preprocess_css'\]); // disable hardcoded css aggregation\nunset(\n$conf\['preprocess_js'\]);  // disable hardcoded js aggregation" >> /var/aegir/config/includes/global.inc
 				break;;
 			No ) break;;
 		esac
