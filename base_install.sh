@@ -5,10 +5,6 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 1800; kill -0 "$$" || exit; done 2>/dev/null &
 
-if type "git" &> /dev/null; then
-	echo "git not installed. Aborting."
-fi
-
 if type "brew" &> /dev/null; then
   echo "Brew is already installed"
 else
@@ -405,7 +401,7 @@ else
 				sudo chown `whoami` /var/aegir
 				sudo chgrp staff /var/aegir
 				sudo dscl . append /Groups/_www GroupMembership `whoami`
-				#sudo echo "`whoami` ALL=NOPASSWD: /usr/local/bin/nginx" >> /etc/sudoers
+				sudo echo "`whoami` ALL=NOPASSWD: /usr/local/bin/nginx" >> /etc/sudoers
 				sudo ln -s /var/aegir/config/nginx.conf /usr/local/etc/nginx/aegir.conf
 				brew install drush
 				drush dl --destination=$HOME/.drush provision-6.x-2.x
