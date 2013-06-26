@@ -425,10 +425,11 @@ select yn in "Yes" "No"; do
 	case $yn in
 		Yes )
 			brew install drush
-			brew cask install vagrant
+			echo "Make sure you install vagrant 1.0.0 until new versions are tested working"
+			#brew cask install vagrant
 			brew cask install virtualbox
 			drush dl drush-vagrant drush-hosts aegir-up
-			drush vagrant-build --blueprint=aegir
+			#drush vagrant-build --blueprint=aegir
 		No ) break;;
 	esac
 done
