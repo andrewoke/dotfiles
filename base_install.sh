@@ -419,3 +419,16 @@ else
 		esac
 	done
 fi
+
+echo "Do you wish to install aegir-up?"
+select yn in "Yes" "No"; do
+	case $yn in
+		Yes )
+			brew install drush
+			brew cask install vagrant
+			brew cask install virtualbox
+			drush dl drush-vagrant drush-hosts aegir-up
+			drush vagrant-build --blueprint=aegir
+		No ) break;;
+	esac
+done
