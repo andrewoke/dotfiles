@@ -92,23 +92,11 @@ else
 	echo "Do you wish to install VLC?"
 	select yn in "Yes" "No"; do
 		case $yn in
-			Yes )  brew cask install --appdir="/Applications" arduino; break;;
+			Yes )  brew cask install --appdir="/Applications" vlc; break;;
 			No ) break;;
 		esac
 	done
   brew cask install --appdir="/Applications" vlc
-fi
-
-if [ -x /Applications/VirtualBox.app ] ; then
-  echo "VirtualBox already installed"
-else
-	echo "Do you wish to install VirtualBox?"
-	select yn in "Yes" "No"; do
-		case $yn in
-			Yes )  brew cask install --appdir="/Applications" virtualbox; break;;
-			No ) break;;
-		esac
-	done
 fi
 
 if [ -x /Applications/Subler.app ] ; then
@@ -423,13 +411,14 @@ fi
 echo "Do you wish to install aegir-up?"
 select yn in "Yes" "No"; do
 	case $yn in
-		Yes )
-			brew install drush
+		Yes )	brew install drush
 			echo "Make sure you install vagrant 1.0.0 until new versions are tested working"
 			#brew cask install vagrant
-			brew cask install virtualbox
+			#brew cask install virtualbox
+			echo "You need to install virtualbox 4.1 until new versions are tested working"
 			drush dl drush-vagrant drush-hosts aegir-up
 			#drush vagrant-build --blueprint=aegir
+			break;;
 		No ) break;;
 	esac
 done
