@@ -14,9 +14,9 @@ else
 fi
 
 read -e -p "Enter the git global user.email " gitUserEmail
-git config --global user.email gitUserEmail
+git config --global user.email $gitUserEmail
 read -e -p "Enter git global user.name " gitUserName
-git config --global user.name gitUserName
+git config --global user.name $gitUserName
 
 #let's us install all those programs that aren't in the app store
 if [ -x /usr/local/Cellar/brew-cask ]; then
