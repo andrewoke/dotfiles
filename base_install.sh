@@ -22,7 +22,7 @@ git config --global user.name $gitUserName
 if [ -x /usr/local/Cellar/brew-cask ]; then
   echo "Brew cask already installed"
 else
-  brew tap andrewoke/homebrew-cask	
+  brew tap phinze/homebrew-cask 
   brew install brew-cask
 fi
 
@@ -111,18 +111,6 @@ else
 	done
 fi
 
-if [ -x /Applications/MacVim.app ] ; then
-  echo "MacVim already installed"
-else
-	echo "Do you wish to install MacVim?"
-	select yn in "Yes" "No"; do
-		case $yn in
-			Yes )  brew cask install --appdir="/Applications" macvim; break;;
-			No ) break;;
-		esac
-	done
-fi
-
 if [ -x /Applications/HandBrake.app ] ; then
   echo "HandBrake already installed"
 else
@@ -195,18 +183,6 @@ else
 	done
 fi
 
-if [ -x /Applications/HandBrakeCLI ] ; then
-  echo "HandBrakeCLI already installed"
-else
-	echo "Do you wish to install HandbrakeCLI?"
-	select yn in "Yes" "No"; do
-		case $yn in
-			Yes )  brew cask install --appdir="/Applications" handbrakecli; break;;
-			No ) break;;
-		esac
-	done
-fi
-
 if [ -x /Applications/owncloud.app ] ; then
   echo "owncloud already installed"
 else
@@ -226,18 +202,6 @@ else
 	select yn in "Yes" "No"; do
 		case $yn in
 			Yes )  brew install zsh; break;;
-			No ) break;;
-		esac
-	done
-fi
-
-if [ -x /opt/homebrew-cask/Caskroom/true-crypt ] ; then
-  echo "true-crypt already installed"
-else
-	echo "Do you wish to install True Crypt?"
-	select yn in "Yes" "No"; do
-		case $yn in
-			Yes )  brew cask install --appdir="/Applications" true-crypt; break;;
 			No ) break;;
 		esac
 	done
