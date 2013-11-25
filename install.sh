@@ -9,7 +9,7 @@ if type "brew" &> /dev/null; then
   echo "Brew is already installed"
 else
   echo "Brew not installed. Attempting to install"
-  ruby -e "$(curl -fsSL https://raw.github.com/andrewoke/homebrew/go)"
+  ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
   brew doctor
 fi
 
@@ -23,6 +23,10 @@ fi
 
 brew update
 brew upgrade
+
+if [ ! -d /usr/local/Cellar/zsh ] ; then
+  brew install zsh
+fi
 
 brew cask install --appdir="/Applications" google-chrome
 brew cask install --appdir="/Applications" arduino
