@@ -28,8 +28,7 @@ if [ ! -d /usr/local/Cellar/zsh ] ; then
   brew install zsh
 fi
 
-###############
-if [ ! -d /usr/local/opt/libftdi ] then
+if [ ! -d /usr/local/opt/libftdi ] ; then
   brew install libftdi
 fi
 
