@@ -32,6 +32,10 @@ if [ ! -d /usr/local/opt/libftdi ] ; then
   brew install libftdi
 fi
 
+if [ ! -d /usr/local/Cellar/wget ] ; then
+  brew install wget
+fi
+
 brew cask install --appdir="/Applications" google-chrome
 brew cask install --appdir="/Applications" arduino
 brew cask install --appdir="/Applications" dropbox
