@@ -57,4 +57,4 @@ brew cask install --appdir="/Applications" eyetv
 brew cask install --appdir="/Applications" lingon-x
 brew cask install --appdir="/Applications" tvshows
 brew cask install xquartz; sudo ln -s /opt/X11 /usr/X11
-brew cask install --appdir="/Applications" cheatsheat
+brew cask install --appdir="/Applications" cheatsheet
