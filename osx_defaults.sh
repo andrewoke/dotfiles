@@ -35,13 +35,13 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 
 # Set computer name (as done via System Preferences → Sharing)
 # set computerName to something without spaces
-read -e -p "Enter hostname (alphanumeric only) " computerName
-computerName="$computerName"
-computerNameLD="$computerName.ld"
-sudo scutil --set ComputerName $computerNameLD
-sudo scutil --set HostName $computerNameLD
-sudo scutil --set LocalHostName $computerName
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $computerNameLD
+#read -e -p "Enter hostname (alphanumeric only) " computerName
+#computerName="$computerName"
+#computerNameLD="$computerName.ld"
+#sudo scutil --set ComputerName $computerNameLD
+#sudo scutil --set HostName $computerNameLD
+#sudo scutil --set LocalHostName $computerName
+#sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $computerNameLD
 
 # Menu bar: show remaining battery time (on pre-10.8); hide percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
@@ -157,7 +157,7 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
+defaults write com.apple.screensaver askForPasswordDelay -int 15
 
 # Save screenshots to the desktop
 defaults write com.apple.screencapture location -string "$HOME/Desktop"

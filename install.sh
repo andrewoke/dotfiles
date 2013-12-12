@@ -54,4 +54,6 @@ brew cask install --appdir="/Applications" processing
 brew cask install --appdir="/Applications" ynab
 brew cask install --appdir="/Applications" virtualbox
 brew cask install --appdir="/Applications" eyetv
+brew cask install --appdir="/Applications" lingon-x
+brew cask install --appdir="/Applications" tvshows
 brew cask install xquartz; sudo ln -s /opt/X11 /usr/X11
