@@ -32,8 +32,11 @@ sudo pmset -a standbydelay 86400
 ## Menu bar: disable transparency
 #defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
 #
-## Menu bar: hide the useless Time Machine and Volume icons
-#defaults write com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
+## Menu bar
+defaults write ~/Library/Preferences/com.apple.systemuiserver -array \
+    "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
+    "/System/Library/CoreServices/Menu Extras/Eject.menu" \    
+    "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
 #
 ## Save to disk (not to iCloud) by default
 #defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
@@ -432,9 +435,9 @@ defaults write com.apple.Safari  ShowFullURLInSmartSearchField true
 #defaults write com.apple.Safari ProxiesInBookmarksBar "()"
 #
 ## Enable the Develop menu and the Web Inspector in Safari
-#defaults write com.apple.Safari IncludeDevelopMenu -bool true
-#defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
 #
 ## Add a context menu item for showing the Web Inspector in web views
 #defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
@@ -520,4 +523,3 @@ for app in "Address Book" "Calendar" "Contacts" "Dashboard" "Dock" "Finder" \
         "Twitter" "iCal" "iTunes"; do
         killall "$app" > /dev/null 2>&1
 done
-#

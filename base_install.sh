@@ -31,8 +31,37 @@ fi
 if [ -x /usr/local/Cellar/brew-cask ]; then
   echo "Brew cask already installed"
 else
-  brew tap phinze/homebrew-cask 
-  brew install brew-cask
+    brew install caskroom/cask/brew-cask
+fi
+
+if [ -x /usr/local/bin/node ]; then
+  echo "nodejs already installed"
+else
+  brew install nodejs
+fi
+
+if [ -x /usr/local/bin/phonegap ]; then
+  echo "phonegap already installed"
+else
+  sudo npm install -g phonegap
+fi
+
+if [ -x /usr/local/bin/cordova ]; then
+  echo "cordova already installed"
+else
+  sudo npm install -g cordova
+fi
+
+if [ -x /usr/local/bin/ant ]; then
+	echo "ant already installed"
+else
+	brew install ant
+fi
+
+if [ -x /usr/local/bin/mongodb ]; then
+	echo "mongodb already installed"
+else
+	brew install mongodb
 fi
 
 if [ -x /Applications/Google\ Chrome.app ] ; then
@@ -45,6 +74,18 @@ else
 			No ) break;;
 		esac
 	done
+fi
+
+if [ -x /Applications/Slic3r.app ] ; then
+  echo "slic3r already installed"
+else
+        echo "Do you wish to install Slic3r?"
+        select yn in "Yes" "No"; do
+                case $yn in
+                        Yes ) brew cask install --appdir="/Applications" slic3r; break;;
+                        No ) break;;
+                esac
+        done
 fi
 
 if [ -x /Applications/Arduino.app ] ; then
