@@ -64,6 +64,12 @@ else
 	brew install mongodb
 fi
 
+if [ -x /usr/local/bin/grunt ]; then
+	echo "grunt already installed"
+else
+	npm install -g grunt-cli
+fi
+
 if [ -x /Applications/Google\ Chrome.app ] ; then
   echo "Google chrome already installed"
 else
