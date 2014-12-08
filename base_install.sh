@@ -46,6 +46,13 @@ else
   sudo npm install -g phonegap
 fi
 
+if [ -x /usr/local/bin/bower ]; then
+  echo "bower already installed"
+else
+  sudo npm install -g bower 
+fi
+
+
 if [ -x /usr/local/bin/cordova ]; then
   echo "cordova already installed"
 else
@@ -58,7 +65,7 @@ else
 	brew install ant
 fi
 
-if [ -x /usr/local/bin/mongodb ]; then
+if [ -x /usr/local/bin/mongod ]; then
 	echo "mongodb already installed"
 else
 	brew install mongodb
@@ -130,13 +137,13 @@ else
 	done
 fi
 
-if [ -x "/Applications/Plex.app" ] ; then
+if [ -x "/Applications/Plex Home Theater.app" ] ; then
   echo "Plex already installed"
 else
 	echo "Do you wish to install Plex Frontend?"
 	select yn in "Yes" "No"; do
 		case $yn in
-			Yes )  brew cask install --appdir="/Applications" plex; break;;
+			Yes )  brew cask install --appdir="/Applications" plex-home-theater; break;;
 			No ) break;;
 		esac
 	done
