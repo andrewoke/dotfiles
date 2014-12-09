@@ -34,6 +34,12 @@ else
     brew install caskroom/cask/brew-cask
 fi
 
+if [ -x /usr/local/bin/meteor ]; then
+	echo "meteor.js already installed"
+else
+	curl https://install.meteor.com/ | sh
+fi
+
 if [ -x /usr/local/bin/node ]; then
   echo "nodejs already installed"
 else
