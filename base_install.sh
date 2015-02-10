@@ -71,6 +71,12 @@ else
 	brew install ant
 fi
 
+if [ -x /usr/local/bin/yo ]; then
+	echo "yo already installed"
+else
+	sudo npm install -g yo	
+fi
+
 if [ -x /usr/local/bin/mongod ]; then
 	echo "mongodb already installed"
 else
@@ -83,16 +89,16 @@ else
 	npm install -g grunt-cli
 fi
 
-if [ -x /Applications/Google\ Chrome.app ] ; then
-  echo "Google chrome already installed"
+if [ -x /usr/local/bin/gulp ]; then
+	echo "gulp already installed"
 else
-	echo "Do you wish to install Google Chrome?"
-	select yn in "Yes" "No"; do
-		case $yn in
-			Yes ) brew cask install --appdir="/Applications" google-chrome; break;;
-			No ) break;;
-		esac
-	done
+	npm install -g gulp 
+fi
+
+if [ -x /usr/bin/sass]; then
+	echo "sass already installed"
+else
+	sudo gem install sass
 fi
 
 if [ -x /Applications/Slic3r.app ] ; then
